@@ -38,13 +38,20 @@ module.exports = {
         exclude: /(node_modules)/, // 排除文件
         loader: 'babel-loader'
       },
+      // {
+      //   test: /\.(eot|svg|ttf|woff|woff2)\w*/,
+      //   loader: 'url-loader',
+      //   // options: {
+      //   //   limit: 100 * 1024
+      //   // }
+      // },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)\w*/,
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
-        // options: {
-        //   limit: 100 * 1024
-        // }
-      },
+        options: {
+          // name: 'fonts/[name].[hash:7].[ext]'
+        }
+      }
     ]
   },
   plugins: [

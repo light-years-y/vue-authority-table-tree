@@ -2,66 +2,56 @@
   <!-- 2021.4.9 sxy 角色权限选择组件 -->
   <el-row class="elRow" ref="treeDataRef">
     <el-checkbox-group v-model="selectTreeData" ref="elCheckboxGroup">
-      <div
-        v-for="(item1, i) in treeData"
-        :key="item1.permissionId"
-        class="list-item"
-      >
+      <div v-for="(item1, i) in treeData" :key="item1[id]" class="list-item">
         <el-checkbox
-          :label="item1.permissionId"
+          :label="item1[id]"
           :checked="item1.exist"
-          @change="val => handleCheckbox(val, item1)"
-          >{{ item1.permissionName }}</el-checkbox
+          @change="(val) => handleCheckbox(val, item1)"
+          >{{ item1[text] }}</el-checkbox
         >
-        <div v-if="item1.children" class="list-item2">
+        <div v-if="item1[children]" class="list-item2">
           <div
-            v-for="(item2, i2) in item1.children"
-            :key="item2.permissionId"
+            v-for="(item2, i2) in item1[children]"
+            :key="item2[id]"
             class="list-item2-item"
           >
             <el-checkbox
-              :label="item2.permissionId"
+              :label="item2[id]"
               :checked="item2.exist"
-              @change="val => handleCheckbox(val, item2, item1.permissionId)"
-              >{{ item2.permissionName }}</el-checkbox
+              @change="(val) => handleCheckbox(val, item2, item1[id])"
+              >{{ item2[text] }}</el-checkbox
             >
-            <div v-if="item2.children" class="list-item3">
+            <div v-if="item2[children]" class="list-item3">
               <div
-                v-for="(item3, i3) in item2.children"
-                :key="item3.permissionId"
+                v-for="(item3, i3) in item2[children]"
+                :key="item3[id]"
                 class="list-item3-item"
               >
                 <el-checkbox
-                  :label="item3.permissionId"
+                  :label="item3[id]"
                   :checked="item3.exist"
                   @change="
-                    val =>
-                      handleCheckbox(
-                        val,
-                        item3,
-                        item1.permissionId,
-                        item2.permissionId
-                      )
+                    (val) => handleCheckbox(val, item3, item1[id], item2[id])
                   "
-                  >{{ item3.permissionName }}</el-checkbox
+                  >{{ item3[text] }}</el-checkbox
                 >
-                <div v-if="item3.children" class="list-item4">
+                <div v-if="item3[children]" class="list-item4">
                   <el-checkbox
-                    v-for="(item4, i) in item3.children"
-                    :key="item4.permissionId"
-                    :label="item4.permissionId"
+                    v-for="(item4, i) in item3[children]"
+                    :key="item4[id]"
+                    :label="item4[id]"
                     :checked="item4.exist"
                     @change="
-                      val =>
+                      (val) =>
                         handleCheckbox(
                           val,
                           item4,
-                          item1.permissionId,
-                          item2.permissionId,
-                          item3.permissionId
+                          item1[id],
+                          item2[id],
+                          item3[id]
                         )
                     "
-                    >{{ item4.permissionName }}</el-checkbox
+                    >{{ item4[text] }}</el-checkbox
                   >
                 </div>
               </div>
@@ -81,25 +71,33 @@ export default {
       type: Array,
       default: function() {
         return [];
-      }
-    }
+      },
+    },
+    treeProps: {
+      type: Object,
+      default: {
+        children: "children",
+        text: "permissionName",
+        id: "permissionId",
+      },
+    },
   },
   data() {
     return {
-      selectTreeData: []
+      selectTreeData: [],
+      children: this.treeProps.children,
+      text: this.treeProps.text,
+      id: this.treeProps.id,
     };
   },
   watch: {
-    selectTreeData(val) {
-      this.$emit("logSelectData", val);
-    }
+    selectTreeData(val) {},
   },
   methods: {
     updateSelectTreeData() {
       return this.selectTreeData;
     },
     resetSelectTreeData() {
-      console.log(333333333)
       this.selectTreeData = [];
     },
     handleCheckbox(val, currentItem, parentVal) {
@@ -145,7 +143,7 @@ export default {
     },
     recursionAddCheckboxChildFunc(chData) {
       if (Object.prototype.toString.call(chData) == "[object Array]") {
-        chData.forEach(item => {
+        chData.forEach((item) => {
           this.selectTreeData = this.arrPushUnRepeatedFunc(
             this.selectTreeData,
             item.permissionId
@@ -158,7 +156,7 @@ export default {
     },
     recursionDeleteCheckboxChildFunc(chData) {
       if (Object.prototype.toString.call(chData) == "[object Array]") {
-        chData.forEach(item => {
+        chData.forEach((item) => {
           this.deleteArrEleFunc(this.selectTreeData, item.permissionId);
           this.recursionDeleteCheckboxChildFunc(item.children);
         });
@@ -181,13 +179,12 @@ export default {
     },
     unRepeatedFunc(val) {
       return Array.from(new Set(val));
-    }
-  }
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-
 .elRow {
   margin: 20px 20px 80px 20px;
 
