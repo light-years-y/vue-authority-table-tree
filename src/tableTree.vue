@@ -79,6 +79,7 @@ export default {
         children: "children",
         text: "permissionName",
         id: "permissionId",
+        parentId: "parentId",
       },
     },
   },
@@ -88,6 +89,7 @@ export default {
       children: this.treeProps.children,
       text: this.treeProps.text,
       id: this.treeProps.id,
+      parentId: this.treeProps.parentId
     };
   },
   watch: {
@@ -108,19 +110,19 @@ export default {
           this.selectTreeData,
           paArr
         );
-        this.recursionAddCheckboxChildFunc(currentItem.children);
+        this.recursionAddCheckboxChildFunc(currentItem[this.children]);
       } else {
-        this.recursionDeleteCheckboxChildFunc(currentItem.children);
+        this.recursionDeleteCheckboxChildFunc(currentItem[this.children]);
       }
     },
     handleCheckbox2(val, currentItem, rootArr) {
-      let paId = currentItem.parentId;
-      let cuId = currentItem.permissionId;
+      let paId = currentItem[this.parentId];
+      let cuId = currentItem[this.id];
 
       if (val) {
-        this.recursionAddCheckboxChildFunc(currentItem.children);
+        this.recursionAddCheckboxChildFunc(currentItem[this.children]);
       } else {
-        this.recursionDeleteCheckboxChildFunc(currentItem.children);
+        this.recursionDeleteCheckboxChildFunc(currentItem[this.children]);
       }
 
       let arr = this.recursionAddCheckboxParentFunc(rootArr, paId);
@@ -130,13 +132,13 @@ export default {
     },
     recursionAddCheckboxParentFunc(data, id) {
       for (var i in data) {
-        if (data[i].permissionId == id) {
-          return [data[i].permissionId];
+        if (data[i][this.id] == id) {
+          return [data[i][this.id]];
         }
-        if (data[i].children) {
-          var ro = this.recursionAddCheckboxParentFunc(data[i].children, id);
+        if (data[i][this.children]) {
+          var ro = this.recursionAddCheckboxParentFunc(data[i][this.children], id);
           if (ro !== undefined) {
-            return ro.concat(data[i].permissionId);
+            return ro.concat(data[i][this.id]);
           }
         }
       }
@@ -146,9 +148,9 @@ export default {
         chData.forEach((item) => {
           this.selectTreeData = this.arrPushUnRepeatedFunc(
             this.selectTreeData,
-            item.permissionId
+            item[this.id]
           );
-          this.recursionAddCheckboxChildFunc(item.children);
+          this.recursionAddCheckboxChildFunc(item[this.children]);
         });
       } else {
         return;
@@ -157,8 +159,8 @@ export default {
     recursionDeleteCheckboxChildFunc(chData) {
       if (Object.prototype.toString.call(chData) == "[object Array]") {
         chData.forEach((item) => {
-          this.deleteArrEleFunc(this.selectTreeData, item.permissionId);
-          this.recursionDeleteCheckboxChildFunc(item.children);
+          this.deleteArrEleFunc(this.selectTreeData, item[this.id]);
+          this.recursionDeleteCheckboxChildFunc(item[this.children]);
         });
       }
     },
