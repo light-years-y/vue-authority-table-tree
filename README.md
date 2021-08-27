@@ -33,12 +33,12 @@ Vue.use(tableTree)
 export default {
   data() {
     return {
-      treeData:[],
+      treeData: [],
       treeProps: {
-				children: "children",
-				text: "treeName",
-				id: "treeId",
-			},
+    	children: "children",
+		text: "treeName",
+		id: "treeId",
+	  },
       selectData:[],
     }
   },
@@ -85,8 +85,8 @@ export default {
     },
     clearBtn() {
       // 清空已选择数据
-			this.$refs.treeDataRef.resetSelectTreeData()
-		},
+	  this.$refs.treeDataRef.resetSelectTreeData()
+	},
   },
 }
 </script>
@@ -95,10 +95,10 @@ export default {
 
 ## Props
 
-| Props    | type  | description         |
-| -------- | ----- | ------------------- |
-| treeData | Array | Tree structure data |
-| treeProps | Object | tree props |
+| Props     | type   | description         |
+| --------- | ------ | ------------------- |
+| treeData  | Array  | Tree structure data |
+| treeProps | Object | tree props          |
 
 ## Methods
 
@@ -113,10 +113,10 @@ this.$refs.treeDataRef.resetSelectTreeData();
 
 ```
 
-| method name          | params | description     |
-| -------------------- | ------ | --------------- |
-| updateSelectTreeData | null   | get select Data |
-| resetSelectTreeData | null   | reset select Data |
+| method name          | params | description       |
+| -------------------- | ------ | ----------------- |
+| updateSelectTreeData | null   | get select Data   |
+| resetSelectTreeData  | null   | reset select Data |
 
 ## Keywords
 

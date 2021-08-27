@@ -1,7 +1,7 @@
 {
   "name": "vue-authority-table-tree",
   "description": "A Vue Components, Table display of tree structure",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "author": "sxy",
   "license": "MIT",
   "private": false,
@@ -9,6 +9,10 @@
     "build": "webpack --config webpack.prod.config.js"
   },
   "main": "dist/tableTree.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/light-years-y/vue-authority-table-tree"
+  },
   "files": [
     "dist",
     "src"
